@@ -1,10 +1,11 @@
-from flask import Flask, render_template, request, redirect, url_for, session, jsonify, make_response
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify, make_response, send_file
 from bmkg_api import get_latest_bmkg_data
 from detector import MLAnomalyDetector
 from sheets_logger import save_to_google_sheets
 import pandas as pd
 import io
 import threading
+import os
 
 app = Flask(__name__)
 app.secret_key = 'monetra_secret_key_sangat_aman'  # Kunci enkripsi untuk session login
@@ -156,4 +157,5 @@ def download_csv():
     )
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    port = int(os.environ.get("PORT", 8000))
+    app.run(host='0.0.0.0', port=port)
